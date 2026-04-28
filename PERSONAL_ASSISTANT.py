@@ -1,3 +1,6 @@
+import os
+import json
+
 data = {
     "notes": ["Купить хлеб", "Выучить Git"], 
     "reminders": [
@@ -6,9 +9,23 @@ data = {
     ]
 }
 
-while True:
+if os.path.exists ("PERSONAL_ASSISTANT.json") and os.path.getsize > 0:
+    with open("PERSONAL_ASSISTANT.json", "r", encoding="utf-8") as a:
+        data = json.load(a)
+    
+    with open("PERSONAL_ASSISTANT.json", "w", encoding="utf-8") as b:
+        json.dump(data, b, ensure_ascii=False, indent=2)
+    
+else:
+    with open("PERSONAL_ASSISTANT.json", "x", encoding="utf-8") as c:
+        json.dump(data, c, ensure_ascii=False, indent=2)
+
+
+
+while True: 
 
     user_choice = input("\n---МЕНЮ---\n1. Показать заметки\n2. Добавить заметку\n3. Удалить заметку\n4. Показать напоминания\n5. Добавить напоминание\n6. Удалить напоминание\n7. Выйти\n\nВыберите действие: ")
+
     if user_choice == "1":
         print()
         print("Текущие заметки:\n")
@@ -68,6 +85,6 @@ while True:
         for num, dict in enumerate(data["reminders"], start=1):
             print(f"{num}. {dict["text"]} ({dict["date"]})")
 
-    if user_choice == "7":
+    if user_choice == "7": 
         print("Вы вышли из программы!")
         break
