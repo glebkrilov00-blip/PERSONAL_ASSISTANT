@@ -1,15 +1,18 @@
 import os
 import json
+from datetime import date, timedelta
 
 data = {
     "notes": ["Купить хлеб", "Выучить Git"], 
     "reminders": [
-        {"text": "Позвонить маме", "date": "2026-04-27"},
-        {"text": "Сдать проект", "date": "2026-04-30"}
+        {"text": "Подуть на ветер", "date": "2026-04-29"}, 
+        {"text": "Позвонить маме", "date": "2026-04-30"},
+        {"text": "Сдать проект", "date": "2026-04-28"},
+        {"text": "Переплыть реку", "date": "2026-04-29"}
     ]
 }
 
-if os.path.exists ("PERSONAL_ASSISTANT.json") and os.path.getsize > 0:
+if os.path.exists ("PERSONAL_ASSISTANT.json") and os.path.getsize("PERSONAL_ASSISTANT.json") > 0:
     with open("PERSONAL_ASSISTANT.json", "r", encoding="utf-8") as a:
         data = json.load(a)
     
@@ -20,7 +23,21 @@ else:
     with open("PERSONAL_ASSISTANT.json", "x", encoding="utf-8") as c:
         json.dump(data, c, ensure_ascii=False, indent=2)
 
+date_now = date.today().strftime("%Y-%m-%d")
+found = False
+remind_current = []
 
+for item in data["reminders"]:
+    if date_now == item["date"]:
+        remind_current.append(item["text"])
+        found = True
+
+print("Напоминания на сегодня:\n")
+for i, item in enumerate(remind_current, start= 1):
+    print(f"{i}. {item}")
+
+if not found:
+    print("Напоминаний на сегодня нет!")
 
 while True: 
 
