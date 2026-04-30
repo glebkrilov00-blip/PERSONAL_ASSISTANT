@@ -16,12 +16,14 @@ if os.path.exists ("PERSONAL_ASSISTANT.json") and os.path.getsize("PERSONAL_ASSI
     with open("PERSONAL_ASSISTANT.json", "r", encoding="utf-8") as a:
         data = json.load(a)
     
-    with open("PERSONAL_ASSISTANT.json", "w", encoding="utf-8") as b:
-        json.dump(data, b, ensure_ascii=False, indent=2)
     
 else:
     with open("PERSONAL_ASSISTANT.json", "x", encoding="utf-8") as c:
         json.dump(data, c, ensure_ascii=False, indent=2)
+
+def save_data():
+    with open("PERSONAL_ASSISTANT.json", "w", encoding="utf-8") as d:
+            json.dump(data, d, ensure_ascii=False, indent=2)
 
 date_now = date.today().strftime("%Y-%m-%d")
 found = False
@@ -56,7 +58,8 @@ while True:
         print("Текущие заметки:\n")
         c = "\n".join(f"{i}. {items}" for i, items in enumerate(data["notes"], start=1))
         print(f"{c}")
-
+        save_data()
+            
     if user_choice == "3":
         print()
         c = "\n".join(f"{i}. {items}" for i, items in enumerate(data["notes"], start=1))
@@ -68,6 +71,7 @@ while True:
         print("Текущие заметки:\n")
         c = "\n".join(f"{i}. {items}" for i, items in enumerate(data["notes"], start=1))
         print(f"{c}")
+        save_data()
 
     if user_choice == "4":
         print()
@@ -80,14 +84,13 @@ while True:
         new_remind = input("Введите новое напоминание: ")
         new_remind_date = input("Введите дату события (YYYY-MM-DD): ")
 
-        new_dict = {"text": [], "date": []}
+        new_dict = {"text": new_remind, "date": new_remind_date}
         data["reminders"].append(new_dict)
-        data["reminders"][2]["text"] = new_remind
-        data["reminders"][2]["date"] = new_remind_date
         print()
         print("Текущие напоминания:\n")
         for num, dict in enumerate(data["reminders"], start=1):
             print(f"{num}. {dict['text']} ({dict['date']})")
+        save_data()
 
     if user_choice == "6":
         print()
@@ -101,6 +104,7 @@ while True:
         print("Текущие напоминания:\n")
         for num, dict in enumerate(data["reminders"], start=1):
             print(f"{num}. {dict["text"]} ({dict["date"]})")
+        save_data()
 
     if user_choice == "7": 
         print("Вы вышли из программы!")
